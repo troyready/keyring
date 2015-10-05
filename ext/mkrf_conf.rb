@@ -11,7 +11,12 @@ inst = Gem::DependencyInstaller.new
 begin
   if RUBY_PLATFORM =~ /linux/
     warn "*linux: installing gir_ffi-gnome_keyring..."
-    inst.install "gir_ffi-gnome_keyring", '~> 0.0.3'
+    case File.directory?('/opt/chefdk')
+    when false
+      inst.install "gir_ffi-gnome_keyring", '~> 0.0.3'
+    else
+      system 'chef gem install gir_ffi-gnome_keyring'
+    end
   end
 rescue
   exit(1)
